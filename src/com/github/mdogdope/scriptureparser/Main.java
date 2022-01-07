@@ -1,5 +1,6 @@
 package com.github.mdogdope.scriptureparser;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
@@ -8,21 +9,39 @@ import java.util.logging.Logger;
 public class Main {
 	
 	public static void main(String[] args) {
-//		setupLogger();
-		Boolean GUIMode = false;
-		for(int i=0; i < args.length; i++) {
-			switch(args[i]) {
-			case "--gui":
-				GUIMode = true;
-				break;
+		boolean testMode = true;
+		if(testMode) {
+			runTestCode();
+		}else {
+//			setupLogger();
+			Boolean GUIMode = false;
+			for(int i=0; i < args.length; i++) {
+				switch(args[i]) {
+				case "--gui":
+					GUIMode = true;
+					break;
+				}
+			}
+			if(GUIMode) {
+				
+			}else {
+				setupCLI();
 			}
 		}
-		if(GUIMode) {
-			
-		}else {
-			setupCLI();
+		
+	}
+	
+	public static void runTestCode() {
+		System.out.println("Running test");
+		File rawDir = new File("BookOfMormonRaw");
+		if(!rawDir.exists()) {
+			rawDir.mkdir();
 		}
 		
+		File rawDir2 = new File(rawDir.toString() + "/" + "test");
+		if(!rawDir2.exists()) {
+			rawDir2.mkdir();
+		}
 	}
 	
 	private static void setupLogger() {
