@@ -7,6 +7,5 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="C:/Users/ekimh/Documents/~My_Projects/Coding_Projects/Special-External-Libs/jsoup-1.13.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/ekimh/Documents/~My_Projects/Coding_Projects/Special-External-Libs/log4j.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
