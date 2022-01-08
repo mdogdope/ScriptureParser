@@ -37,23 +37,25 @@ public class Setup {
 			}
 			while(dataReader.ready()) {
 				String[] rawData = dataReader.readLine().strip().split(":");
-				
-//				System.out.println(rawData);
-				
 				int maxCh = Integer.parseInt(rawData[1]);
 				String bookName = rawData[0];
+				String bookNameFixed = bookName;
 				
-				File bookDir = new File(rawDir.toString() + "/" + bookName);
+				if(bookNameFixed.contains("/")) {
+					bookNameFixed = bookNameFixed.replace("/", "");
+				}
+				
+				File bookDir = new File(rawDir.toString() + "/" + bookNameFixed);
 				if(!bookDir.exists()) {
 					bookDir.mkdir();
 				}
 				for(int i = 1; i <= maxCh; i++) {
 					File f = new File(bookDir, "CH" + i + ".sdat");
 					if(f.exists()) {
-						System.out.println("Found " + key + " " + bookName + " " + i + "/" + maxCh);
+						System.out.println("Found " + key + " " + bookNameFixed + " " + i + "/" + maxCh);
 						continue;
 					}
-					System.out.println("Starting " + key + " " + bookName + " " + i + "/" + maxCh);
+					System.out.println("Starting " + key + " " + bookNameFixed + " " + i + "/" + maxCh);
 					BufferedWriter sourceWriter = new BufferedWriter(new FileWriter(f));
 					Document rawSource = Jsoup.connect(buildUrl(key, bookName, i)).timeout(0).get();
 					
