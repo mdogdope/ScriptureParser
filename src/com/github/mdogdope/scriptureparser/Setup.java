@@ -28,22 +28,25 @@ public class Setup {
 	private final String URL_KEYS[] = {"ot", "nt", "dc", "pgp", "bom"};
 	
 	public void fetchData() throws IOException {
-		String baseDataPath = "book_data/%s_chapters.dat";
+		// Base path to find data for each book.
+		String baseBookData = "book_data/%s_chapters.dat";
+		
+		// Parent folder of all raw data files.
+		File baseDirBookData = new File("raw_content");
+		if(!baseDirBookData.exists()) {
+			baseDirBookData.mkdir();
+		}
 		
 		for(String key : URL_KEYS) { // Loop through collections of books.
-			BufferedReader bookDataReader = new BufferedReader(new FileReader(new File(String.format(baseDataPath, key))));	
+			BufferedReader bookDataReader = new BufferedReader(new FileReader(new File(String.format(baseBookData, key))));	
 			
-			// Checks if directory exists and creates it if not.
-			File rawDir = new File(key + "Raw");
-			if(!rawDir.exists()) {
-				rawDir.mkdir();
-			}
 			while(bookDataReader.ready()) {
+				
 				String[] rawData = bookDataReader.readLine().strip().split(":");
 				int maxCh = Integer.parseInt(rawData[1]);
 				String bookName = rawData[0];
 				
-				File bookDir = new File(rawDir.toString() + "/" + bookName);
+				File bookDir = new File(baseDirBookData, bookName);
 				if(!bookDir.exists()) {
 					bookDir.mkdir();
 				}
@@ -73,12 +76,15 @@ public class Setup {
 	}
 	
 	public void parseData() throws IOException {
+		// Base path to find data for each book.
+		String baseBookData = "book_data/%s_chapters.dat";
+		
 		// Check for and make directory for parsed book data.
 		File baseDirBookData = new File("book_content");
 		if(!baseDirBookData.exists()) {
 			baseDirBookData.mkdir();
 		}
-		String baseBookData = "book_data/%s_chapters.dat";
+		
 		// Loop through collections of books.
 		for(String key : URL_KEYS) {
 			BufferedReader bookDataReader = new BufferedReader(new FileReader(new File(String.format(baseBookData, key))));
@@ -110,12 +116,12 @@ public class Setup {
 						int end = line.indexOf(toFind) + toFind.length();
 						line = line.substring(end);
 						
-						line = line.replace("</p>", "");
-						line = line.replaceAll("</a>", "");
-						line = line.replaceAll("(<a).{1,200}(up>)", "");
-						line = line.replaceAll("</span>", "");
-						line = line.replaceAll("(<s).{1,200}(\">)", "");
-						line = line.replaceAll("¶ ", "");
+						line = line.replace("</p>", ""); // Remove end tags
+						line = line.replaceAll("</a>", ""); // Remove end of hyperlink tag
+						line = line.replaceAll("(<a).{1,200}(up>)", ""); // Remove all superscript links
+						line = line.replaceAll("</span>", ""); // Remove end of all span tags.
+						line = line.replaceAll("(<s).{1,200}(\">)", ""); // Remove all span tags.
+						line = line.replaceAll("¶ ", ""); // Remove all paragraph symbols.
 						
 						chWriter.write(line + "\n");
 						
@@ -125,5 +131,20 @@ public class Setup {
 				}	
 			}
 		}
+	}
+	
+	public void deleteRawData() {
+		File temp = new File("raw_content");
+		temp.delete();
+	}
+	
+	public void deleteCleanData() {
+		File temp = new File("book_content");
+		temp.delete();
+	}
+	
+	public void deleteAllData() {
+		deleteRawData();
+		deleteCleanData();
 	}
 }
