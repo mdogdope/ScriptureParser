@@ -8,7 +8,10 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Vector;
 
-public class SciptureParser {
+public class ScriptureParser {
+	
+	private final String KEYS[] = {"ot", "nt", "dc", "pgp", "bom"};
+	
 	private Vector<Block> blocks = new Vector<>();
 	
 	public boolean addBlock(String book, int chapter, int start, int end) throws IOException {
@@ -16,7 +19,26 @@ public class SciptureParser {
 		if(bookCode.isEmpty()) {
 			return false;
 		}
-		//TODO: Add check for verifying chapter validity.
+				
+		for(String key : KEYS) {
+			File file = new File("book_data/" + key + "_chapters.dat");
+			BufferedReader br = new BufferedReader(new FileReader(file));
+			
+			while(br.ready()) {
+				String[] line = br.readLine().split(":");
+				if(line[0].equals(bookCode)) {
+					if(chapter > Integer.parseInt(line[1])) {
+						br.close();
+						return false;
+					}
+				}
+			}
+			
+			
+			br.close();
+		}
+		
+		
 		blocks.add(new Block(bookCode, chapter, start, end));
 		
 		return true;
@@ -29,7 +51,7 @@ public class SciptureParser {
 	
 	private String encodeBookName(String book) throws IOException {
 		String ret = "";
-		BufferedReader codeReader = new BufferedReader(new FileReader(new File("book_codes.txt")));
+		BufferedReader codeReader = new BufferedReader(new FileReader(new File("book_data/book_codes.dat")));
 		while(codeReader.ready()) {
 			String[] splitData = codeReader.readLine().split(":");
 			String code = splitData[0];
@@ -43,7 +65,7 @@ public class SciptureParser {
 	}
 	
 	public void generate(String exportName) throws IOException{
-		BufferedWriter ofile = new BufferedWriter(new FileWriter(new File(exportName)));
+		BufferedWriter ofile = new BufferedWriter(new FileWriter(new File(exportName + ".txt")));
 		
 		for(Block block : blocks) {
 			

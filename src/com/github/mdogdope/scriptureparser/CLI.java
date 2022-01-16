@@ -8,6 +8,8 @@ import java.util.Scanner;
 
 public class CLI {
 	
+	private ScriptureParser sp = new ScriptureParser();
+	
 	public CLI() throws IOException {
 		BufferedReader titleReader = new BufferedReader(new FileReader(new File("title.txt")));
 		while(titleReader.ready()) {
@@ -39,7 +41,10 @@ public class CLI {
 				runSetup(args);
 				break;
 			case "export":
-				runExport();
+				runExport(args);
+				break;
+			case "break":
+				this.sp.addBreak();
 				break;
 			default:
 				addBlock(args);
@@ -50,15 +55,31 @@ public class CLI {
 		System.out.println("Quit scripture parser");
 	}
 	
-	private void runSetup(String[] args) {
-		
+	private void runSetup(String[] args) throws IOException {
+		Setup s = new Setup();
+		if(args.length == 1) {
+			s.fetchData();
+			s.parseData();
+		}
 	}
 	
-	private void addBlock(String[] args) {
-		
+	private void addBlock(String[] args) throws IOException {
+		if(args.length == 3) {
+			this.sp.addBlock(args[0], Integer.parseInt(args[1]), Integer.parseInt(args[2]), Integer.parseInt(args[2]));
+		}else if(args.length == 2) {
+			this.sp.addBlock(args[0], Integer.parseInt(args[1]), 1, 1000);
+		}else if(args.length == 4){
+			this.sp.addBlock(args[0], Integer.parseInt(args[1]), Integer.parseInt(args[2]), Integer.parseInt(args[3]));
+		}
 	}
 	
-	private void runExport() {
+	private void runExport(String[] args) throws IOException {
+		String fileName = "export.txt";
+		if(args.length >= 2) {
+			fileName = args[1];
+		}
+		
+		this.sp.generate(fileName);
 		
 	}
 }
