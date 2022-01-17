@@ -56,6 +56,7 @@ public class ScriptureParser {
 			String[] splitData = codeReader.readLine().split(":");
 			String code = splitData[0];
 			String name = splitData[1].replace(" ", "").toLowerCase();
+			book = book.replaceAll(" ", "").toLowerCase();
 			if(book.equals(name) || book.equals(code)) {
 				ret = code;
 			}

@@ -22,6 +22,7 @@ public class CLI {
 		
 		System.out.println("setup all|download|install|delete");
 		System.out.println("<book|bookCode> <chapter> <first verse> <last verse>");
+		System.out.println("break");
 		
 		Scanner userInput = new Scanner(System.in);
 		
@@ -64,10 +65,10 @@ public class CLI {
 	}
 	
 	private void addBlock(String[] args) throws IOException {
-		if(args.length == 3) {
-			this.sp.addBlock(args[0], Integer.parseInt(args[1]), Integer.parseInt(args[2]), Integer.parseInt(args[2]));
-		}else if(args.length == 2) {
+		if(args.length == 2) {
 			this.sp.addBlock(args[0], Integer.parseInt(args[1]), 1, 1000);
+		}else if(args.length == 3) {
+			this.sp.addBlock(args[0], Integer.parseInt(args[1]), Integer.parseInt(args[2]), Integer.parseInt(args[2]));
 		}else if(args.length == 4){
 			this.sp.addBlock(args[0], Integer.parseInt(args[1]), Integer.parseInt(args[2]), Integer.parseInt(args[3]));
 		}
