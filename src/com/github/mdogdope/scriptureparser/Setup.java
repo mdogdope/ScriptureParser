@@ -16,6 +16,63 @@ import org.jsoup.nodes.Document;
 
 public class Setup {
 	
+	public void downloadData() throws IOException {
+		BufferedReader bookInfoReader = new BufferedReader(new FileReader(new File("book_info.dat")));
+		while(bookInfoReader.ready()) {
+//			currInfo[collection|code|name|chapters]
+			String[] info = bookInfoReader.readLine().split(":");
+			for(int i = 1; i <= Integer.parseInt(info[3]); i++) {
+				Document rawData = fetchChapter(info[0], info[1], i);
+				
+			}
+		}
+	}
+	
+	private Document fetchChapter(String coll, String code, int chapter) throws IOException {
+		@SuppressWarnings("serial")
+		Map<String, String> URLS = new HashMap<String, String>(){{
+			put("ot", "https://www.churchofjesuschrist.org/study/scriptures/ot/%s/%d?lang=eng");
+			put("nt", "https://www.churchofjesuschrist.org/study/scriptures/nt/%s/%d?lang=eng");
+			put("dc", "https://www.churchofjesuschrist.org/study/scriptures/dc-testament/%s/%d?lang=eng");
+			put("pgp", "https://www.churchofjesuschrist.org/study/scriptures/pgp/%s/%d?lang=eng");
+			put("bom", "https://www.churchofjesuschrist.org/study/scriptures/bofm/%s/%d?lang=eng");
+		}};
+		
+		String url = String.format(URLS.get(coll), code, chapter);
+		
+		Document rawData = Jsoup.connect(url).timeout(0).get();
+		
+		return rawData;
+	}
+	
+	private Vector<String> parseChapter(Document data){
+		Vector<String> ret = new Vector<String>();
+		
+		Vector<String> lines = new Vector<>();
+		Collections.addAll(lines, data.html().split("\\n"));
+		
+		for(String line : lines) {
+			
+			if(!line.contains("class=\"verse-number\"")) {
+				continue;
+			}
+			
+			line = line.replaceAll("^(.*?(<\\/span>))", ""); // Remove beginning junk;
+			line = line.replace("</p>", ""); // Remove end tags
+			line = line.replaceAll("</a>", ""); // Remove end of hyperlink tag
+			line = line.replaceAll("(<a).{1,200}(up>)", ""); // Remove all superscript links
+			line = line.replaceAll("</span>", ""); // Remove end of all span tags.
+			line = line.replaceAll("(<s).{1,200}(\">)", ""); // Remove all span tags.
+			line = line.replaceAll("¶ ", ""); // Remove all paragraph symbols.
+			ret.add(line);
+		}
+		
+		return ret;
+	}
+	
+	
+//	####### OLD CODE #######
+	
 	@SuppressWarnings("serial")
 	private final Map<String, String> URLS = new HashMap<String, String>(){{
 		put("ot", "https://www.churchofjesuschrist.org/study/scriptures/ot/%s/%d?lang=eng");
@@ -116,6 +173,7 @@ public class Setup {
 						int end = line.indexOf(toFind) + toFind.length();
 						line = line.substring(end);
 						
+//						line = line.replaceAll("^(.*?(<\\/span>))", ""); // Remove beginning junk;
 						line = line.replace("</p>", ""); // Remove end tags
 						line = line.replaceAll("</a>", ""); // Remove end of hyperlink tag
 						line = line.replaceAll("(<a).{1,200}(up>)", ""); // Remove all superscript links

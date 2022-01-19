@@ -5,7 +5,7 @@ jacob:Jacob
 enos:Enos
 jarom:Jarom
 omni:Omni
-wom:Words of Mormon
+w-of-m:Words of Mormon
 mosiah:Mosiah
 alma:Alma
 hel:Helaman
@@ -13,7 +13,8 @@ hel:Helaman
 4-ne:4 Nephi
 morm:Mormon
 ether:Ether
-moro:Moronimatt:Matthew
+moro:Moroni
+matt:Matthew
 mark:Mark
 luke:Luke
 john:John
@@ -39,7 +40,8 @@ james:James
 2-jn:2 John
 3-jn:3 John
 jude:Jude
-rev:Revelationgen:Genesis
+rev:Revelation
+gen:Genesis
 ex:Exodus
 lev:Leviticus
 num:Numbers
@@ -77,7 +79,8 @@ hab:Habakkuk
 zeph:Zephaniah
 hag:Haggai
 zech:Zechariah
-mal:Malachimoses:Moses
+mal:Malachi
+moses:Moses
 abr:Abraham
-js-m:Joseph Smith—Matthew
-js-h:Joseph Smith—History
+js-m:Joseph Smith-Matthew
+js-h:Joseph Smith-History
