@@ -1,6 +1,5 @@
 package com.github.mdogdope.scriptureparser;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
@@ -32,15 +31,15 @@ public class Main {
 	}
 	
 	public static void runTestCode() {
-		System.out.println("Running test");
-		File rawDir = new File("BookOfMormonRaw");
-		if(!rawDir.exists()) {
-			rawDir.mkdir();
-		}
-		
-		File rawDir2 = new File(rawDir.toString() + "/" + "test");
-		if(!rawDir2.exists()) {
-			rawDir2.mkdir();
+		try {
+			
+			System.out.println("Running test");
+			Setup test = new Setup();
+			test.setupChapter("bom", "1-ne", 1);
+			
+			
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 	

@@ -59,8 +59,7 @@ public class CLI {
 	private void runSetup(String[] args) throws IOException {
 		Setup s = new Setup();
 		if(args.length == 1) {
-			s.fetchData();
-			s.parseData();
+			s.setupData();
 		}
 	}
 	
