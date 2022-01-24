@@ -33,9 +33,9 @@ public class Main {
 	public static void runTestCode() {
 		try {
 			
-			System.out.println("Running test");
-			Setup test = new Setup();
-			test.setupChapter("bom", "1-ne", 1);
+			ScriptureParser sp = new ScriptureParser();
+			String result = sp.testCode("ac");
+			System.out.println(result);
 			
 			
 		} catch (IOException e) {
