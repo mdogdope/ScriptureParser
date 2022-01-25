@@ -20,13 +20,12 @@ public class ScriptureParser {
 		}
 		
 		// Check if chapter is valid.
-		if(checkChapter(code, chapter)) {
+		if(!checkChapter(code, chapter)) {
 			return false;
 		}
 		
 		// If both checks pass add new block to blocks vector.
-		
-		this.blocks.add(new Block(book, chapter, start, end));
+		this.blocks.add(new Block(code, chapter, start, end));
 		
 		return true;
 	}
