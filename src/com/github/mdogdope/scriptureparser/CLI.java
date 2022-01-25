@@ -11,14 +11,20 @@ public class CLI {
 	private ScriptureParser sp = new ScriptureParser();
 	
 	public CLI() throws IOException {
-		BufferedReader titleReader = new BufferedReader(new FileReader(new File("title.txt")));
-		while(titleReader.ready()) {
-			System.out.println(titleReader.readLine());
-			if(!titleReader.ready()) {
-				System.out.println("\n"); // Adds an extra line below title.
+		File titleFile = new File("title.txt");
+		if(titleFile.exists()) {
+			BufferedReader titleReader = new BufferedReader(new FileReader(titleFile));
+			while(titleReader.ready()) {
+				System.out.println(titleReader.readLine());
+				if(!titleReader.ready()) {
+					System.out.println("\n"); // Adds an extra line below title.
+				}
 			}
+			titleReader.close();	
+		}else {
+			System.out.println("    Scripture Parser");
+			System.out.println("========================");
 		}
-		
 		
 		System.out.println("setup all|download|install|delete");
 		System.out.println("\t<book|bookCode> <chapter> <first verse> <last verse>");
