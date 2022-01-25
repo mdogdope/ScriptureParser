@@ -24,7 +24,12 @@ public class ScriptureParser {
 			return false;
 		}
 		
-		// If both checks pass add new block to blocks vector.
+		// Check if verse is in correct order.
+		if(start > end) {
+			return false;
+		}
+		
+		// If all checks pass add new block to blocks list.
 		this.blocks.add(new Block(code, chapter, start, end));
 		
 		return true;
