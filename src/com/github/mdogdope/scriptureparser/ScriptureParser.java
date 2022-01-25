@@ -58,6 +58,7 @@ public class ScriptureParser {
 				if(counter >= block.start() && counter <= block.end()) {
 					ofile.write(verse + "\n");
 				}
+				counter++;
 			}
 			
 			contentReader.close();
@@ -66,8 +67,8 @@ public class ScriptureParser {
 		ofile.close();
 	}
 	
-	protected String testCode(String test) throws IOException {
-		return bookToCode(test);
+	protected String testCode() throws IOException {
+		return this.blocks.lastElement().book();
 	}
 	
 	private boolean checkChapter(String code, int ch) throws IOException {

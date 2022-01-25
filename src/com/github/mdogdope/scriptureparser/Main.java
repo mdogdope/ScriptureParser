@@ -31,16 +31,7 @@ public class Main {
 	}
 	
 	public static void runTestCode() {
-		try {
-			
-			ScriptureParser sp = new ScriptureParser();
-			String result = sp.testCode("ac");
-			System.out.println(result);
-			
-			
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		
 	}
 	
 	private static void setupLogger() {
