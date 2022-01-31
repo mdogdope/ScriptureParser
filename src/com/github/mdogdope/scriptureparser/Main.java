@@ -5,10 +5,13 @@ import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.swing.UnsupportedLookAndFeelException;
+
 public class Main {
 	
 	public static void main(String[] args) {
 		boolean testMode = false;
+		
 		if(testMode) {
 			runTestCode();
 		}else {
@@ -21,8 +24,9 @@ public class Main {
 					break;
 				}
 			}
+			
 			if(GUIMode) {
-				
+				setupGUI();
 			}else {
 				setupCLI();
 			}
@@ -46,6 +50,22 @@ public class Main {
 		}
 		logger.addHandler(fh);
 		logger.log(Level.INFO, "Example Info");
+	}
+	
+	private static void setupGUI() {
+		try {
+			GUI gui = new GUI();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (UnsupportedLookAndFeelException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	private static void setupCLI() {

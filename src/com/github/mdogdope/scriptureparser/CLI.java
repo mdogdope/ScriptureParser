@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Scanner;
+import java.util.Vector;
 
 public class CLI {
 	
@@ -26,9 +27,10 @@ public class CLI {
 			System.out.println("========================");
 		}
 		
-		System.out.println("setup all|download|install|delete");
-		System.out.println("\t<book|bookCode> <chapter> <first verse> <last verse>");
-		System.out.println("\tbreak");
+		System.out.println("Commands:");
+		System.out.println("    setup all|download|install|delete");
+		System.out.println("    <book|bookCode> <chapter> <first verse> <last verse>");
+		System.out.println("    break");
 		
 		Scanner userInput = new Scanner(System.in);
 		
@@ -70,6 +72,17 @@ public class CLI {
 	}
 	
 	private void addBlock(String[] args) throws IOException {
+		Vector<String> possCheck = this.sp.checkBook(args[0]);
+		if(possCheck.size() >= 2) {
+			String baseText = "Multiple matches:";
+			
+			for(int i = 0; i < possCheck.size(); i++) {
+				baseText += " " + possCheck.elementAt(i);
+			}
+			
+			System.out.println(baseText);
+			return;
+		}
 		boolean success = false;
 		if(args.length == 2) {
 			success = this.sp.addBlock(args[0], Integer.parseInt(args[1]), 1, 1000);
@@ -79,7 +92,7 @@ public class CLI {
 			success = this.sp.addBlock(args[0], Integer.parseInt(args[1]), Integer.parseInt(args[2]), Integer.parseInt(args[3]));
 		}
 		if(success) {
-			System.out.println(this.sp.testCode());
+			
 		}else {
 			System.out.println("Error");
 		}
@@ -89,6 +102,9 @@ public class CLI {
 		String fileName = "export.txt";
 		if(args.length >= 2) {
 			fileName = args[1];
+			if(!fileName.endsWith(".txt")) {
+				fileName += ".txt";
+			}
 		}
 		
 		this.sp.generate(fileName);

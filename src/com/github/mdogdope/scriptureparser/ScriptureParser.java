@@ -40,6 +40,38 @@ public class ScriptureParser {
 		return true;
 	}
 	
+	public Vector<String> checkBook(String book) throws IOException{
+		BufferedReader infoReader = new BufferedReader(new FileReader(new File("book_info.dat")));
+		Vector<String> ret = new Vector<>();
+		
+		while(infoReader.ready()) {
+			String[] info = infoReader.readLine().split(":");
+			String fullName = info[2];
+			String name = fullName.toLowerCase().replaceAll(" ", "");
+			
+			book = book.toLowerCase();
+			
+			if(book.length() > name.length()) {
+				continue;
+			}
+			
+			boolean passed = true;
+			for(int i = 0; i < book.length(); i++) {
+				if(book.charAt(i) != name.charAt(i)) {
+					passed = false;
+				}
+			}
+			if(passed) {
+				ret.add(fullName);
+			}
+			
+		}
+		
+		infoReader.close();
+		
+		return ret;
+	}
+	
 	public void generate(String fname) throws IOException {
 		BufferedWriter ofile = new BufferedWriter(new FileWriter(fname));
 		for(Block block : this.blocks) {
