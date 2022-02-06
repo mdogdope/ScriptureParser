@@ -28,9 +28,10 @@ public class CLI {
 		}
 		
 		System.out.println("Commands:");
-		System.out.println("    setup all|download|install|delete");
-		System.out.println("    <book|bookCode> <chapter> <first verse> <last verse>");
+		System.out.println("    setup [all|download|install [book|book code]]");
+		System.out.println("    <book|book code> <chapter> [first verse] [last verse]");
 		System.out.println("    break");
+		System.out.println("    quit");
 		
 		Scanner userInput = new Scanner(System.in);
 		
@@ -39,7 +40,7 @@ public class CLI {
 			System.out.print(">>");
 			cmd = userInput.nextLine();
 			
-			if(cmd.toLowerCase().equals("q")) {
+			if(cmd.toLowerCase().charAt(0) == 'q') {
 				break;
 			}
 			
@@ -66,8 +67,27 @@ public class CLI {
 	
 	private void runSetup(String[] args) throws IOException {
 		Setup s = new Setup();
-		if(args.length == 1) {
+
+		switch(args.length) {
+		case 1:
 			s.setupData();
+			break;
+		case 2:
+			switch(args[1]) {
+			case "all":
+				
+				break;
+			case "install":
+				
+				break;
+			case "download":
+			case "dl":
+				
+				break;
+			}
+			break;
+		case 3:
+			
 		}
 	}
 	
@@ -99,11 +119,11 @@ public class CLI {
 	}
 	
 	private void runExport(String[] args) throws IOException {
-		String fileName = "export.txt";
+		String fileName = "export.rol";
 		if(args.length >= 2) {
 			fileName = args[1];
-			if(!fileName.endsWith(".txt")) {
-				fileName += ".txt";
+			if(!fileName.endsWith(".rol")) {
+				fileName += ".rol";
 			}
 		}
 		
