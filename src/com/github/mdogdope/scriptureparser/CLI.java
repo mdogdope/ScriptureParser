@@ -31,6 +31,8 @@ public class CLI {
 		System.out.println("    setup [all|download|install [book|book code]]");
 		System.out.println("    <book|book code> <chapter> [first verse] [last verse]");
 		System.out.println("    break");
+		System.out.println("    list");
+		System.out.println("    remove <block Index> [block index]...");
 		System.out.println("    quit");
 		
 		Scanner userInput = new Scanner(System.in);
@@ -56,6 +58,11 @@ public class CLI {
 			case "break":
 				this.sp.addBreak();
 				break;
+			case "list":
+				listAllBlocks();
+			case "remove":
+				removeBlock(args);
+				break;
 			default:
 				addBlock(args);
 			}
@@ -63,6 +70,22 @@ public class CLI {
 		}
 		userInput.close();
 		System.out.println("Quit scripture parser");
+	}
+	
+	private void listAllBlocks() {
+		System.out.println("Entries\n============");
+		if(this.sp.getBlocks().size() > 0) {
+			int index = 0;
+			for(Block b : this.sp.getBlocks()) {
+				String base = "%d. %s CH %d %d %d";
+				System.out.println(String.format(base, index, b.book(), b.chapter(), b.start(), b.end()));
+				index++;
+			}
+		}
+	}
+	
+	private void removeBlock(String[] args) {
+		this.sp.removeBlock(args);
 	}
 	
 	private void runSetup(String[] args) throws IOException {
@@ -93,6 +116,7 @@ public class CLI {
 	
 	private void addBlock(String[] args) throws IOException {
 		Vector<String> possCheck = this.sp.checkBook(args[0]);
+		
 		if(possCheck.size() >= 2) {
 			String baseText = "Multiple matches:";
 			
@@ -103,6 +127,7 @@ public class CLI {
 			System.out.println(baseText);
 			return;
 		}
+		
 		boolean success = false;
 		if(args.length == 2) {
 			success = this.sp.addBlock(args[0], Integer.parseInt(args[1]), 1, 1000);
